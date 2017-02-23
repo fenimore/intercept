@@ -1,10 +1,22 @@
+//var port = browser.runtime.connect();
 var urls = [];
 
-browser.runtime.onConnect.addListener(function(port) {
+browser.runtime.onConnect.addListener(function(p) {
     for (var i = 0; i < urls.length; i++) {
-        port.postMessage({"req": urls[i]});
+        p.postMessage({"req": urls[i]});
     }
+
 });
+
+browser.runtime.onMessage.addListener(function(m) {
+    if (m.msg === "clear") {
+        urls = [];
+    }
+
+});
+
+
+
 
 function logURL(req) {
     var result = "<li><small>"+ req.method +
