@@ -1,5 +1,6 @@
 //var port = browser.runtime.connect();
 var urls = [];
+var intercept = false;
 
 browser.runtime.onConnect.addListener(function(p) {
     for (var i = 0; i < urls.length; i++) {
@@ -12,6 +13,9 @@ browser.runtime.onMessage.addListener(function(m) {
     if (m.msg === "clear") {
         urls = [];
     }
+    if (m.msg == "intercept") {
+        intercept = true;
+    }
 
 });
 
@@ -19,6 +23,9 @@ browser.runtime.onMessage.addListener(function(m) {
 
 
 function logURL(req) {
+    if (!intercept) {
+        return;
+    }
     var result = "<li><small>"+ req.method +
         " [<span class=status>" + req.statusCode + "</span>] " +
         req.type  +
