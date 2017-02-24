@@ -3,24 +3,30 @@ var urls = [];
 var intercept = false;
 
 browser.runtime.onConnect.addListener(function(p) {
-    for (var i = 0; i < urls.length; i++) {
-        p.postMessage({"req": urls[i]});
+    if (intercept) {
+        p.postMessage({"on": "true"});
+    } else if (!intercept) {
+        p.postMessage({"on": "false"});
     }
-
+    if (urls.length > 0) {
+        for (var i = 0; i < urls.length; i++) {
+            p.postMessage({"req": urls[i]});
+        }
+    }
 });
 
 browser.runtime.onMessage.addListener(function(m) {
-    if (m.msg === "clear") {
+    console.log(m.msg);
+    switch (m.msg) {
+    case "clear":
         urls = [];
+    case "intercept":
+        intercept = !intercept;
+        console.log(intercept);
+    case "export":
+        // do something
     }
-    if (m.msg == "intercept") {
-        intercept = true;
-    }
-
 });
-
-
-
 
 function logURL(req) {
     if (!intercept) {
@@ -28,7 +34,7 @@ function logURL(req) {
     }
     var result = "<li><small>"+ req.method +
         " [<span class=status>" + req.statusCode + "</span>] " +
-        req.type  +
+        " [<span class=type>" + req.type + "</span>] " +
         "</small><br>    <a target=_blank href=" + req.url + ">" + req.url + "</a><br></li>";
     urls.push(result);
 }

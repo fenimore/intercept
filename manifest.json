@@ -1,24 +1,25 @@
 {
-  "description": "web request",
-  "manifest_version": 2,
-  "name": "capt",
+    "description": "web request",
+    "manifest_version": 2,
+    "author": "Fenimore Love",
+    "name": "intercept",
     "version": "1.0",
 
-  "icons": {
-    "48": "icons/req-48.png"
-  },
+    "icons": {
+        "48": "icons/req-48.png"
+    },
 
-  "permissions": [
-    "webRequest"
-  ],
+    "permissions": [
+        "webRequest"
+    ],
 
-  "browser_action": {
-    "default_icon": "icons/req-32.png",
-    "default_title": "Requests",
-    "default_popup": "popup/popup.html"
-  },
+    "browser_action": {
+        "default_icon": "icons/req-32.png",
+        "default_title": "Requests",
+        "default_popup": "popup/popup.html"
+    },
 
-  "background": {
-    "scripts": ["background.js"]
-  }
+    "background": {
+        "scripts": ["background.js"]
+    }
 }

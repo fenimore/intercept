@@ -2,9 +2,16 @@ var port = browser.runtime.connect();
 var output = document.getElementById("output");//.innerHTML =  m.req + ;
 var btnClear = document.getElementById("clear");
 var btnInter = document.getElementById("intercept");
+var btnExport = document.getElementById("export");
+var on = false;
 
 port.onMessage.addListener(function(m) {
-    console.log("Received from bagkround");
+    if (m.on === "true") {
+        on = true;
+    } else if (m.on === "false") {
+        on = false;
+    }
+    setIntercept(on);
     output.innerHTML = m.req + output.innerHTML;
 });
 
@@ -13,15 +20,28 @@ function clearReq() {
     browser.runtime.sendMessage({"msg": "clear"});
 }
 
-function intercept()  {
+function setIntercept(t) {
+    if (t) {
+        document.getElementById("intercept").innerHTML = "stop intercept";
+    } else {
+        document.getElementById("intercept").innerHTML = "start intercept";
+    }
+}
+
+function intercept() {
     browser.runtime.sendMessage({"msg": "intercept"});
+    on = !on;
+    setIntercept(on);
+}
+
+function exp() {
+    var prom = browser.browserAction.getPopup({});
+    prom.then(function(p) {
+        console.log(p);
+        browser.tabs.create({url:p});
+    });
 }
 
 btnClear.addEventListener("click", clearReq, false);
 btnInter.addEventListener("click", intercept, false);
-
-window.addEventListener('click',function(e){
-    if(e.target.href!==undefined){
-        browser.tabs.create({url:e.target.href});
-    }
-});
+btnExport.addEventListener("click", exp, false);
