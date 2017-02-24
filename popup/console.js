@@ -37,7 +37,6 @@ function intercept() {
 function exp() {
     var prom = browser.browserAction.getPopup({});
     prom.then(function(p) {
-        console.log(p);
         browser.tabs.create({url:p});
     });
 }

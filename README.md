@@ -1,4 +1,4 @@
 intercept
 ====
 
-Firefox WebExtension for listing browser requests.
+Firefox WebExtension for listing/tracking browser requests.

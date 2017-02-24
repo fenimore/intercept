@@ -22,9 +22,6 @@ browser.runtime.onMessage.addListener(function(m) {
         urls = [];
     case "intercept":
         intercept = !intercept;
-        console.log(intercept);
-    case "export":
-        // do something
     }
 });
 
@@ -32,10 +29,11 @@ function logURL(req) {
     if (!intercept) {
         return;
     }
-    var result = "<li><small>"+ req.method +
-        " [<span class=status>" + req.statusCode + "</span>] " +
-        " [<span class=type>" + req.type + "</span>] " +
-        "</small><br>    <a target=_blank href=" + req.url + ">" + req.url + "</a><br></li>";
+    var result = "<li><small>"+ req.method
+        + " [<span class=status>" + req.statusCode + "</span>] "
+        + " [<span class=type>" + req.type + "</span>] "
+        + "</small><br>    <a target=_blank href=" + req.url + ">"
+        + req.url + "</a><br></li>";
     urls.push(result);
 }
 
