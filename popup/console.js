@@ -3,6 +3,8 @@ var output = document.getElementById("output");//.innerHTML =  m.req + ;
 var btnClear = document.getElementById("clear");
 var btnInter = document.getElementById("intercept");
 var btnExport = document.getElementById("export");
+var e = document.getElementById("selectedType");
+var selectedType = e.options[e.selectedIndex].value;
 var on = false;
 
 port.onMessage.addListener(function(m) {
@@ -11,12 +13,24 @@ port.onMessage.addListener(function(m) {
     } else if (m.on === "false") {
         on = false;
     }
+    if (m.selectedType){
+        selectedType = m.selectedType;
+    }
+    for (var i = 0; i < e.options.length; i++) {
+        if (e.options[i].value === selectedType) {
+            e.selectedIndex = i;
+            break;
+        }
+    }
+
     setIntercept(on);
-    output.innerHTML = m.req + output.innerHTML;
+    if (m.req) {
+        output.innerHTML = m.req + output.innerHTML;
+    }
 });
 
 function clearReq() {
-    output.innerHTML = "<ul></ul>";
+    output.innerHTML = "";
     browser.runtime.sendMessage({"msg": "clear"});
 }
 
@@ -44,3 +58,10 @@ function exp() {
 btnClear.addEventListener("click", clearReq, false);
 btnInter.addEventListener("click", intercept, false);
 btnExport.addEventListener("click", exp, false);
+
+document.addEventListener('DOMContentLoaded',function() {
+    document.querySelector('select[id="selectedType"]').onchange=function(event) {
+        selectedType = event.target.value;
+        browser.runtime.sendMessage({"selectedType": selectedType.trim()});
+    };
+},false);
