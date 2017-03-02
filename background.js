@@ -49,7 +49,6 @@ function logURL(req) {
         + "</small><br>    <a target=_blank href=" + req.url + ">"
         + req.url + "</a><br></li>";
     // FIXME: leaves undefined somewhere
-    console.log(result);
     urls.push(result);
 }
 
